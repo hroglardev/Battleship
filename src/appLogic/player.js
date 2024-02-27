@@ -1,11 +1,8 @@
-export class Player {
-  constructor(name, type = 'human') {
-    this.name = name
-    this.type = type
-    this.turn = false
-  }
+import { Gameboard } from './gameboard'
 
-  toggleTurn() {
-    this.turn = !this.turn
+export class Player {
+  constructor(name) {
+    this.name = name
+    this.board = new Gameboard()
   }
 }

@@ -1,62 +1,28 @@
-import { BoardCell } from './boardCell'
-
 export class Gameboard {
   constructor() {
     this.size = 10
-    this.board = []
-    this.buildBoard()
+    this.board = new Array(this.size * this.size).fill(null)
   }
 
-  buildBoard() {
-    for (let i = 0; i < this.size; i++) {
-      for (let j = 0; j < this.size; j++) {
-        const cell = new BoardCell(i, j)
-        this.board.push(cell)
-      }
-    }
-  }
-
-  placeShip(ship, startX, startY, endX) {
-    const isVertical = this.checkVerticality(startX, endX)
+  placeShip(ship, x, y, isVertical) {
     const shipCells = []
-
-    if (!isVertical) {
-      for (let i = 0; i < ship.length; i++) {
-        const x = startX + i
-        const y = startY
-        const cell = this.getCell(x, y)
-        shipCells.push(cell)
-      }
-    } else {
-      for (let i = 0; i < ship.length; i++) {
-        const x = startX
-        const y = startY + i
-        const cell = this.getCell(x, y)
-        shipCells.push(cell)
+    for (let i = 0; i < ship.shipLength; i++) {
+      if (isVertical) {
+        shipCells.push(Number(`${y + i}${x}`))
+      } else {
+        shipCells.push(Number(`${y}${x + i}`))
       }
     }
+    console.log(shipCells)
+  }
 
-    const isPlacementValid = this.checkValidity(shipCells)
-
-    if (isPlacementValid) {
-      shipCells.forEach((cell) => {
-        cell.setShip(ship)
+  isValidPlacement(shipCells, ship) {
+    const validity = shipCells.every((index) => this.board[index] === null)
+    if (validity) {
+      shipCells.forEach((index) => {
+        this.board[index] = ship
       })
     }
-  }
-
-  checkValidity(shipCells) {
-    return shipCells.every((cell) => cell.hasShip === false)
-  }
-
-  checkVerticality(startX, endX) {
-    return startX === endX
-  }
-  getCell(x, y) {
-    return this.board.find((cell) => cell.x === x && cell.y === y)
-  }
-
-  getBoard() {
-    return this.board
+    return validity
   }
 }
