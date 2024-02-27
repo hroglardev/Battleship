@@ -1,0 +1,9 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.grid {
+  @include staticGrid(repeat(10, 1fr), auto, initial, initial, 0);
+  width: fit-content;
+  margin: 0 auto;
+  height: fit-content;
+}

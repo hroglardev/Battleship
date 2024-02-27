@@ -1,4 +1,4 @@
-import { BoardCell } from './boardCell.js'
+import { BoardCell } from './boardCell'
 
 export class Gameboard {
   constructor() {
@@ -55,7 +55,8 @@ export class Gameboard {
   getCell(x, y) {
     return this.board.find((cell) => cell.x === x && cell.y === y)
   }
-}
 
-const myGameboard = new Gameboard()
-console.log(myGameboard.getCell(0, 0))
+  getBoard() {
+    return this.board
+  }
+}

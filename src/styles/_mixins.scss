@@ -1,0 +1,16 @@
+@mixin flex($flex-direction: row, $justify: initial, $align: initial, $gap: 0) {
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin staticGrid($template-columns, $template-rows, $justify, $align, $gap) {
+  display: grid;
+  grid-template-columns: $template-columns;
+  grid-template-rows: $template-rows;
+  justify-content: $justify;
+  align-content: $align;
+  gap: $gap;
+}

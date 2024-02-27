@@ -6,6 +6,7 @@ export class BoardCell {
     this.x = x
     this.y = y
     this.hasShip = false
+    this.clicked = false
     this.ship = null
   }
 
@@ -18,9 +19,12 @@ export class BoardCell {
     if (this.hasShip) {
       this.ship.hit()
       const isSunk = this.ship.checkSunk()
+      this.clicked = true
       if (isSunk) {
         this.ship.sink()
       }
+    } else {
+      this.clicked = true
     }
   }
 }

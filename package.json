@@ -5,12 +5,12 @@
   "private": true,
   "sideEffects": false,
   "main": "index.js",
-  "type": "module",
+  
   "scripts": {
     "test": "jest",
-    "build": "webpack --config webpack.prod.js",
-    "dev": "webpack --config webpack.dev.js",
-    "start": "webpack serve --open --config webpack.dev.js"
+    "build": "webpack --config webpack.prod.cjs",
+    "dev": "webpack --config webpack.dev.cjs",
+    "start": "webpack serve --open --config webpack.dev.cjs"
   },
   "keywords": [],
   "author": "",
