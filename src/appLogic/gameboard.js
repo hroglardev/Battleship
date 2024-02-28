@@ -2,27 +2,65 @@ export class Gameboard {
   constructor() {
     this.size = 10
     this.board = new Array(this.size * this.size).fill(null)
+    this.attackedTargets = []
   }
 
   placeShip(ship, x, y, isVertical) {
     const shipCells = []
+
     for (let i = 0; i < ship.shipLength; i++) {
       if (isVertical) {
-        shipCells.push(Number(`${y + i}${x}`))
+        if (y + (ship.shipLength - 1) <= this.size - 1) {
+          shipCells.push(Number(`${y + i}${x}`))
+        } else {
+          console.log(`EL BARCO SE VA DE LIMITE (VERTICAL)${y} ${ship}`)
+          return
+        }
       } else {
-        shipCells.push(Number(`${y}${x + i}`))
+        if (x + (ship.shipLength - 1) <= this.size - 1) {
+          shipCells.push(Number(`${y}${x + i}`))
+        } else {
+          console.log(`EL BARCO SE VA DE LIMITE (HORIZONTAL) ${ship}`)
+          return
+        }
       }
     }
-    console.log(shipCells)
+
+    const canPlaceShip = this.#isValidPlacement(shipCells)
+
+    canPlaceShip ? shipCells.forEach((index) => (this.board[index] = ship)) : false
   }
 
-  isValidPlacement(shipCells, ship) {
-    const validity = shipCells.every((index) => this.board[index] === null)
-    if (validity) {
-      shipCells.forEach((index) => {
-        this.board[index] = ship
-      })
+  receiveAttack(x, y) {
+    const boardIndex = Number(`${y}${x}`)
+
+    if (this.board[boardIndex] === 'water' || this.attackedTargets.includes(boardIndex)) {
+      console.log(`Le pegue a la celda ${y}${x} y ya había sido atacada`)
+      return false
     }
-    return validity
+
+    const targetCoordinates = this.board[boardIndex]
+
+    if (targetCoordinates !== null) {
+      targetCoordinates.hit()
+      this.attackedTargets.push(boardIndex)
+      console.log(`Le pegue a la celda ${y}${x} y habia un barco`)
+    } else {
+      console.log(`Le pegue a la celda ${y}${x} y habia agua`)
+      this.board[boardIndex] = 'water'
+      this.attackedTargets.push(boardIndex)
+      console.log(this.board)
+      console.log(this.attackedTargets)
+    }
+    return true
+  }
+
+  #isValidPlacement(shipCells) {
+    return shipCells.every((index) => this.board[index] === null)
+  }
+
+  reportSunk() {
+    const shipCells = this.board.filter((cell) => cell !== 'water' && cell !== null)
+    return shipCells.every((ship) => ship.isSunk())
   }
 }
