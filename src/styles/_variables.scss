@@ -1,0 +1,22 @@
+$font-sizes: (
+  h1: 2.5rem,
+  h2: 1.8rem,
+  h3: 1.5rem,
+  p: 1.2rem,
+  label: 1.3rem,
+);
+
+$primary-color:#0077be;
+$secondary-color: #545454;
+$tertiary-color: #f4f4f4;
+$target-missed: #ff3333;
+$target-hit: #2ecc71;
+
+$small-rounding: 8px;
+$medium-rounding: 16px;
+$rounded: 50%;
+$box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1), 16px 8px 16px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.1);
+
+$small-gap: 15px;
+$medium-gap: 25px;
+$big-gap: 35px;
