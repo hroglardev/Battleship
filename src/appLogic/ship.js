@@ -1,11 +1,3 @@
-const ships = {
-  carrier: 5,
-  battleship: 4,
-  cruiser: 3,
-  submarine: 3,
-  destroryer: 2
-}
-
 export class Ship {
   constructor(length) {
     if (length < 1) {
@@ -22,6 +14,6 @@ export class Ship {
   }
 
   isSunk() {
-    return this.hits === this.length
+    return this.hits === this.shipLength
   }
 }

@@ -1,11 +1,11 @@
 'use strict'
 
 import { logoComponent } from './components/logo/logo'
-import { Game } from './appLogic/game'
 
 import './styles/globals.scss'
+import { welcomeForm } from './components/welcomeForm/welcomeFormAndInitiation'
 
 console.log('HELLO WORLD')
 
 logoComponent()
-const myGame = new Game()
+welcomeForm()

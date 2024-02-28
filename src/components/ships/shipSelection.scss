@@ -1,0 +1,16 @@
+.ship-selector {
+  width: fit-content;
+
+  &.horizontal {
+    display: flex;
+  }
+
+  &.selected {
+    background-color: green;
+  }
+}
+
+
+
+
+

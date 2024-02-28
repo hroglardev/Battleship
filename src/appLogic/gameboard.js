@@ -3,6 +3,8 @@ export class Gameboard {
     this.size = 10
     this.board = new Array(this.size * this.size).fill(null)
     this.attackedTargets = []
+
+    this.placeShip = this.placeShip.bind(this)
   }
 
   placeShip(ship, x, y, isVertical) {
@@ -27,32 +29,26 @@ export class Gameboard {
     const canPlaceShip = this.#isValidPlacement(shipCells)
 
     canPlaceShip && shipCells.forEach((index) => (this.board[index] = ship))
-
     return canPlaceShip
   }
 
   receiveAttack(x, y) {
     const boardIndex = Number(`${y}${x}`)
-
     if (this.board[boardIndex] === 'water' || this.attackedTargets.includes(boardIndex)) {
-      console.log(`Le pegue a la celda ${y}${x} y ya había sido atacada`)
-      return false
+      return { success: false, targetType: null }
     }
 
     const targetCoordinates = this.board[boardIndex]
 
-    if (targetCoordinates !== null) {
+    if (targetCoordinates !== null && targetCoordinates !== 'water') {
       targetCoordinates.hit()
       this.attackedTargets.push(boardIndex)
-      console.log(`Le pegue a la celda ${y}${x} y habia un barco`)
+      return { success: true, targetType: 'ship' }
     } else {
-      console.log(`Le pegue a la celda ${y}${x} y habia agua`)
       this.board[boardIndex] = 'water'
       this.attackedTargets.push(boardIndex)
-      console.log(this.board)
-      console.log(this.attackedTargets)
+      return { success: true, targetType: 'water' }
     }
-    return true
   }
 
   #isValidPlacement(shipCells) {
