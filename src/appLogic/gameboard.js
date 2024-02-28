@@ -13,22 +13,22 @@ export class Gameboard {
         if (y + (ship.shipLength - 1) <= this.size - 1) {
           shipCells.push(Number(`${y + i}${x}`))
         } else {
-          console.log(`EL BARCO SE VA DE LIMITE (VERTICAL)${y} ${ship}`)
-          return
+          return false
         }
       } else {
         if (x + (ship.shipLength - 1) <= this.size - 1) {
           shipCells.push(Number(`${y}${x + i}`))
         } else {
-          console.log(`EL BARCO SE VA DE LIMITE (HORIZONTAL) ${ship}`)
-          return
+          return false
         }
       }
     }
 
     const canPlaceShip = this.#isValidPlacement(shipCells)
 
-    canPlaceShip ? shipCells.forEach((index) => (this.board[index] = ship)) : false
+    canPlaceShip && shipCells.forEach((index) => (this.board[index] = ship))
+
+    return canPlaceShip
   }
 
   receiveAttack(x, y) {
