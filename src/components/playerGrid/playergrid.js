@@ -23,7 +23,6 @@ export const playerGrid = (id, board) => {
         cell.innerText = 'O'
       }
 
-      target === 'water' && cell.classList.add('water')
       appendChildren(grid, cell)
     })
 
@@ -63,7 +62,8 @@ const cellComponent = (index, type) => {
           selectElement('#placeShips').style.pointerEvents = 'none'
         }
       }
-    })
+    }),
+    (cell.id = index)
 
   type === 'enemyGrid' &&
     cell.addEventListener('click', () => {
@@ -75,19 +75,28 @@ const cellComponent = (index, type) => {
       }
       const sunkenShips = game.player2.board.reportSunk()
 
+      const enemyGrid = selectElement('#enemyGrid')
+      enemyGrid.classList.add('inactive')
+
       if (sunkenShips) {
         console.log(sunkenShips)
       }
-    })
 
-  type === 'playerGrid' &&
-    cell.addEventListener('click', () => {
-      game.player2.toggleActive()
-      const successFulAttack = game.player1.board.receiveAttack(+cell.dataset.x, +cell.dataset.y)
-      if (successFulAttack.success) {
-        successFulAttack.targetType === 'ship' ? cell.classList.add('hit') : cell.classList.add('water')
-        cell.innerText = successFulAttack.targetType === 'ship' ? 'O' : 'X'
-      }
+      setTimeout(() => {
+        const aiAttack = game.player1.randomAttack()
+        if (aiAttack.success) {
+          const targetCell = document.getElementById(`${aiAttack.targetIndex}`)
+          aiAttack.targetType === 'ship' ? targetCell.classList.add('hit') : targetCell.classList.add('water')
+          targetCell.innerText = aiAttack.targetType === 'ship' ? 'O' : 'X'
+        }
+
+        const sunkenShipsPlayer = game.player1.board.reportSunk()
+        enemyGrid.classList.remove('inactive')
+        if (sunkenShipsPlayer) {
+          enemyGrid.classList.add('inactive')
+          console.log(sunkenShipsPlayer)
+        }
+      }, 2000)
     })
 
   return cell

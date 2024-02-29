@@ -43,11 +43,11 @@ export class Gameboard {
     if (targetCoordinates !== null && targetCoordinates !== 'water') {
       targetCoordinates.hit()
       this.attackedTargets.push(boardIndex)
-      return { success: true, targetType: 'ship' }
+      return { success: true, targetType: 'ship', targetIndex: boardIndex }
     } else {
       this.board[boardIndex] = 'water'
       this.attackedTargets.push(boardIndex)
-      return { success: true, targetType: 'water' }
+      return { success: true, targetType: 'water', targetIndex: boardIndex }
     }
   }
 

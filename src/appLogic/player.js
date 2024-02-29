@@ -26,4 +26,15 @@ export class Player {
       }
     }
   }
+
+  randomAttack() {
+    let attackWasSuccessful = { success: false }
+    while (!attackWasSuccessful.success) {
+      const x = Math.floor(Math.random() * this.board.size)
+      const y = Math.floor(Math.random() * this.board.size)
+      attackWasSuccessful = this.board.receiveAttack(x, y)
+    }
+    this.toggleActive()
+    return attackWasSuccessful
+  }
 }

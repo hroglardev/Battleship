@@ -2,6 +2,11 @@
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   height: fit-content;
+
+  &.inactive {
+    filter: brightness(90%);
+    pointer-events: none;
+  }
 }
 
 .cell {
@@ -27,4 +32,6 @@
     cursor: none;
   }
 }
+
+
 
