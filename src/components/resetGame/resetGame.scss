@@ -1,0 +1,16 @@
+@use "../../styles/variables" as *;
+
+
+#reset-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+#reset-game {
+  width: fit-content;
+  padding: 4px 16px;
+  border-radius: $small-rounding;
+  height: fit-content;
+  cursor: pointer;
+  font-size: 1.4rem;
+}

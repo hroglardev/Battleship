@@ -10,5 +10,6 @@ export const logoComponent = () => {
   const pageTitle = createHtmlElement('h1', null, 'Battleship', 'page-title')
 
   logo.src = Logo
+
   appendChildren(header, logo, pageTitle)
 }

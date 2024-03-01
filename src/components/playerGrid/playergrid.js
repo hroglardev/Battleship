@@ -4,13 +4,14 @@ import { selectElement } from '../../helpers/selectElements'
 import { game } from '../welcomeForm/welcomeFormAndInitiation'
 import { Ship } from '../../appLogic/ship'
 import './playerGrid.scss'
+import { shipSelection } from '../ships/shipSelection'
+import { resetGame } from '../resetGame/resetGame'
 
 export const playerGrid = (id, board) => {
-  const main = selectElement('#main')
+  const container = selectElement('#playing-grids')
+  const gridContainer = createHtmlElement('div', '', '', 'grid-container')
   const grid = createHtmlElement('div', id, '', 'grid')
-
-  appendChildren(main, grid)
-
+  const gridLabel = createHtmlElement('p', '', '', 'grid-label')
   id === 'placeShips' &&
     board.forEach((target, index) => {
       const cell = cellComponent(index, id)
@@ -22,15 +23,21 @@ export const playerGrid = (id, board) => {
       if (target !== null && target !== 'water') {
         cell.innerText = 'O'
       }
-
+      gridLabel.id = 'player-grid-label'
+      gridLabel.innerText = `Admiral ${game.player1.name}'s waters`
+      selectElement('#player')
       appendChildren(grid, cell)
     })
 
   id === 'enemyGrid' &&
     board.forEach((_target, index) => {
       const cell = cellComponent(index, id)
+      gridLabel.innerText = 'Enemy waters'
       appendChildren(grid, cell)
     })
+
+  appendChildren(container, gridContainer)
+  appendChildren(gridContainer, gridLabel, grid)
 }
 
 const cellComponent = (index, type) => {
@@ -45,21 +52,26 @@ const cellComponent = (index, type) => {
     cell.addEventListener('click', () => {
       const selectedShip = game.selectedShip
       const gameOrientation = game.orientation
-      const placedShip = game.player1.board.placeShip(new Ship(selectedShip), +cell.dataset.x, +cell.dataset.y, gameOrientation)
-      const aside = selectElement('#aside')
+      const placedShip = game.player1.board.placeShip(new Ship(selectedShip.length), +cell.dataset.x, +cell.dataset.y, gameOrientation)
 
       if (placedShip) {
-        const label = selectElement(`label[for="${selectedShip}"]`)
-        const selectShipUi = document.getElementById(`${selectedShip}`)
-        const grid = selectElement('#placeShips')
+        const label = selectElement(`label[for="${selectedShip.type}"]`)
+        const selectShipUi = document.getElementById(`${selectedShip.type}`)
+        const grid = selectElement('.grid-container')
         label.remove()
         selectShipUi.remove()
         grid.remove()
         playerGrid('placeShips', game.player1.board.board)
-        if (aside.childElementCount <= 2) {
+        if (selectedShip.type === 'Destroyer') {
           selectElement('#swap').remove()
           playerGrid('enemyGrid', game.player2.board.board)
           selectElement('#placeShips').style.pointerEvents = 'none'
+          const messages = selectElement('#messages')
+          messages.innerText = 'Take aim and attack the enemy'
+        } else {
+          game.nextShip()
+          selectElement('#swap').remove()
+          shipSelection()
         }
       }
     }),
@@ -68,19 +80,29 @@ const cellComponent = (index, type) => {
   type === 'enemyGrid' &&
     cell.addEventListener('click', () => {
       game.player1.toggleActive()
+      const messages = selectElement('#messages')
+
       const successFulAttack = game.player2.board.receiveAttack(+cell.dataset.x, +cell.dataset.y)
+
       if (successFulAttack.success) {
         successFulAttack.targetType === 'ship' ? cell.classList.add('hit') : cell.classList.add('water')
         cell.innerText = successFulAttack.targetType === 'ship' ? 'O' : 'X'
+        messages.innerText = successFulAttack.targetType === 'ship' ? "You hit the enemy's ship" : 'Your missile landed in water'
       }
+
       const sunkenShips = game.player2.board.reportSunk()
 
       const enemyGrid = selectElement('#enemyGrid')
       enemyGrid.classList.add('inactive')
 
       if (sunkenShips) {
-        console.log(sunkenShips)
+        messages.innerText = "You've sunken all enemy ships"
+        resetGame()
+        return
       }
+      setTimeout(() => {
+        messages.innerText = 'Enemy is taking aim'
+      }, 1500)
 
       setTimeout(() => {
         const aiAttack = game.player1.randomAttack()
@@ -88,15 +110,23 @@ const cellComponent = (index, type) => {
           const targetCell = document.getElementById(`${aiAttack.targetIndex}`)
           aiAttack.targetType === 'ship' ? targetCell.classList.add('hit') : targetCell.classList.add('water')
           targetCell.innerText = aiAttack.targetType === 'ship' ? 'O' : 'X'
+          messages.innerText = aiAttack.targetType === 'ship' ? 'The enemy managed to hit you' : 'Enemy missile landed in water'
         }
 
         const sunkenShipsPlayer = game.player1.board.reportSunk()
-        enemyGrid.classList.remove('inactive')
+
         if (sunkenShipsPlayer) {
           enemyGrid.classList.add('inactive')
-          console.log(sunkenShipsPlayer)
+          messages.innerText = 'The enemy has sunken all your ships!'
+          resetGame()
+          return
+        } else {
+          setTimeout(() => {
+            enemyGrid.classList.remove('inactive')
+            messages.innerText = 'Take aim and attack the enemy'
+          }, 1000)
         }
-      }, 2000)
+      }, 2500)
     })
 
   return cell

@@ -14,7 +14,8 @@ module.exports = {
       filename: 'index.html',
       scriptLoading: 'defer',
       inject: 'head',
-      template: './public/index.html'
+      template: './public/index.html',
+      favicon: './public/favicon.ico'
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
@@ -55,6 +56,13 @@ module.exports = {
         type: 'asset/resource',
         generator: {
           filename: 'assets/icons/[name].[ext]'
+        }
+      },
+      {
+        test: /\.(woff|woff2|ttf)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/fonts/[name][ext]'
         }
       }
     ]

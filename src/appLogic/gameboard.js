@@ -59,4 +59,9 @@ export class Gameboard {
     const shipCells = this.board.filter((cell) => cell !== 'water' && cell !== null)
     return shipCells.every((ship) => ship.isSunk())
   }
+
+  resetBoard() {
+    this.board = this.board.map((_cell) => null)
+    this.attackedTargets = []
+  }
 }

@@ -1,42 +1,37 @@
-import { SHIPS } from '../../appLogic/ships'
 import { appendChildren } from '../../helpers/appendChildren'
 import { createHtmlElement } from '../../helpers/createHtmlElement'
-import { selectElement, selectList } from '../../helpers/selectElements'
+import { selectElement } from '../../helpers/selectElements'
 import { game } from '../welcomeForm/welcomeFormAndInitiation'
 import './shipSelection.scss'
 
 export const shipSelection = () => {
   const aside = selectElement('#aside')
-  for (const shipType in SHIPS) {
-    const label = createHtmlElement('label', '', shipType)
-    label.setAttribute('for', SHIPS[shipType])
-    const container = createHtmlElement('div', SHIPS[shipType], '', 'ship-selector', 'horizontal')
+  aside.innerHtml = ''
+  const currentShip = game.selectedShip
 
-    let counter = 0
+  const label = createHtmlElement('label', '', currentShip.type)
 
-    while (counter < SHIPS[shipType]) {
-      const cell = createHtmlElement('div')
-      cell.style.width = '20px'
-      cell.style.height = '20px'
-      cell.style.border = '1px solid black'
-      appendChildren(container, cell)
-      counter++
-    }
+  label.setAttribute('for', currentShip.type)
+  const container = createHtmlElement('div', currentShip.type, '', 'ship-selector', !game.orientation && 'horizontal')
 
-    container.addEventListener('click', () => {
-      game.setSelectedShip(shipType)
-      const otherContainers = selectList('.ship-selector')
-      otherContainers.forEach((item) => item.classList.remove('selected'))
-      container.classList.add('selected')
-    })
-    appendChildren(aside, label, container)
+  let counter = 0
+
+  while (counter < currentShip.length) {
+    const cell = createHtmlElement('div', '', '', 'select-ship-cell')
+
+    appendChildren(container, cell)
+    counter++
   }
 
-  const button = createHtmlElement('button', 'swap', 'swap-orientation')
+  appendChildren(aside, label, container)
+
+  const messages = selectElement('#messages')
+  messages.innerText = `Place your ${currentShip.type} by clicking on the grid`
+
+  const button = createHtmlElement('button', 'swap', 'Swap orientation')
   button.addEventListener('click', () => {
     game.changeOrientation()
-    const shipList = selectList('.ship-selector')
-    shipList.forEach((ship) => ship.classList.toggle('horizontal'))
+    container.classList.toggle('horizontal')
   })
   appendChildren(aside, button)
 }

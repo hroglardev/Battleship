@@ -12,8 +12,13 @@ module.exports = merge(common, {
       new TerserPlugin(),
       new CssMinimizerPlugin(),
       new ImageMinimizerPlugin({
-        implementation: ImageMinimizerPlugin.sharpMinify
+        minimizer: {
+          implementation: ImageMinimizerPlugin.sharpMinify
+        }
       })
     ]
+  },
+  performance: {
+    maxAssetSize: 1024 * 238
   }
 })

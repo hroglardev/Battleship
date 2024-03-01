@@ -1,10 +1,12 @@
+@use "../../styles/variables" as *;
+
 .grid {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   height: fit-content;
-
+  
   &.inactive {
-    filter: brightness(90%);
+    filter: brightness(80%);
     pointer-events: none;
   }
 }
@@ -13,7 +15,7 @@
   width: 40px;
   height: 40px;
   border: 1px solid black;
-  background-color: white;
+  background-color: $tertiary-color;
   cursor: pointer;
   transition: transform 0.1s ease-in-out;
   display: grid;
@@ -23,14 +25,29 @@
   }
   &.water {
     pointer-events: none;
-    background-color: blue;
+    background-color: $primary-color;
     cursor: none;
   }
   &.hit {
     pointer-events: none;
-    background-color: red;
+    background-color: $target-hit;
     cursor: none;
   }
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: $small-gap;
+  
+}
+
+.grid-label {
+  background-color: $tertiary-color;
+  padding: 4px 8px;
+  border-radius: $small-rounding;
+  border: 2px solid $primary-color;
+  box-shadow: $box-shadow;
 }
 
 
