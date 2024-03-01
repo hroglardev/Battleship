@@ -1,9 +1,22 @@
 @use "./variables" as *;
 @use "./mixins" as *;
+
+@font-face {
+  font-family: "Header";
+  src: url("../assets/fonts/OperationNapalm-nRBWO.ttf");
+}
+
+@font-face {
+  font-family: "Grids";
+  src: url("../assets/fonts/WargateNormalRegular-BWXan.ttf");
+}
+
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Grids";
 }
 
 @each $key, $font-size in $font-sizes {
@@ -15,32 +28,78 @@
 #main-container {
   @include staticGrid(1fr 5fr, auto 1fr auto, initial, initial, 0);
   min-height: 100vh;
+  background-image: url("../assets/images/main-content-background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 
   #header {
-    @include flex(row, flex-start, center, $small-gap);
+   display: flex;
+   gap: $small-gap;
+   place-items: center;
     grid-column: 1 / 3;
     height: fit-content;
     padding: 15px;
-    background-color: red;
+    
   }
 
-  #aside {
-    grid-column: 1/ 2;
-    grid-row: 2/3;
+  #body-container{
+    grid-column: 1/ 3;
+    display: grid;
+    grid-template-columns: auto 1fr;
+ 
+
+    #aside {
+      grid-column: 1/ 2;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    #main {
+      grid-column: 2 / 3;
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      padding: 16px;
+      #messages {
+        display: grid;
+        place-content: center;
+        background-color: $tertiary-color;
+        height: fit-content;
+        padding: 8px 16px;
+        border-radius: 16px;
+        border: 2px solid $primary-color;
+        box-shadow: $box-shadow;
+      }
+
+      #playing-grids {
+        display: flex;
+        gap: $medium-gap;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
+
   
-  #main {
-    grid-column: 2 / 3;
-    background-color: gray;
-    display: flex;
-    flex-wrap: wrap;
-    gap: $big-gap;
-  }
 
   #footer {
     grid-column: 1 / 3;
     grid-row: 3/ 4;
-    background-color: yellow;
+    
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    p {
+      background-color: $tertiary-color;
+      padding: 10px;
+      border-radius: $small-rounding;
+      border: 2px solid $primary-color;
+    }
   }
 }
+
+
+
 

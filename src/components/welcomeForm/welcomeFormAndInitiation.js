@@ -4,6 +4,7 @@ import { selectElement } from '../../helpers/selectElements'
 import { Game } from '../../appLogic/game'
 import { playerGrid } from '../playerGrid/playergrid'
 import { shipSelection } from '../ships/shipSelection'
+import './welcomeFormAndInitiation.scss'
 
 export let game
 

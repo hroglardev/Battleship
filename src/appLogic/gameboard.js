@@ -43,11 +43,11 @@ export class Gameboard {
     if (targetCoordinates !== null && targetCoordinates !== 'water') {
       targetCoordinates.hit()
       this.attackedTargets.push(boardIndex)
-      return { success: true, targetType: 'ship' }
+      return { success: true, targetType: 'ship', targetIndex: boardIndex }
     } else {
       this.board[boardIndex] = 'water'
       this.attackedTargets.push(boardIndex)
-      return { success: true, targetType: 'water' }
+      return { success: true, targetType: 'water', targetIndex: boardIndex }
     }
   }
 
@@ -58,5 +58,10 @@ export class Gameboard {
   reportSunk() {
     const shipCells = this.board.filter((cell) => cell !== 'water' && cell !== null)
     return shipCells.every((ship) => ship.isSunk())
+  }
+
+  resetBoard() {
+    this.board = this.board.map((_cell) => null)
+    this.attackedTargets = []
   }
 }
