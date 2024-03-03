@@ -4,12 +4,9 @@ import { ships } from './ships'
 export class Game {
   constructor(player1) {
     this.player1 = new Player(player1)
-    this.orientation = false
-
     this.player2 = new Player('Computer')
-
+    this.orientation = false
     this.selectedShip = ships[0]
-
     this.player2.placeRandomShips()
   }
 
