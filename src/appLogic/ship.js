@@ -1,8 +1,8 @@
 export class Ship {
   constructor(length) {
-    if (length < 1) {
-      throw new Error('Ship length must be greater than 0.')
-    }
+    if (!length || length < 2) throw new Error('Ships must be at least 2 units long')
+    if (length > 5) throw new Error('Ships must be shorter than 6 units')
+
     this.shipLength = length
     this.hits = 0
   }
