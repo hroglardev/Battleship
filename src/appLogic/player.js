@@ -14,8 +14,8 @@ export class Player {
   }
 
   placeRandomShips() {
+    let placedShip = false
     for (const shipType of ships) {
-      let placedShip = false
       while (!placedShip) {
         const x = Math.floor(Math.random() * this.board.size)
         const y = Math.floor(Math.random() * this.board.size)
