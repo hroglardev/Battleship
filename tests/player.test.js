@@ -1,54 +1,51 @@
 import { Ship } from '../src/appLogic/ship'
+import { Player } from '../src/appLogic/player'
+import { Gameboard } from '../src/appLogic/gameboard'
+import { ships } from '../src/appLogic/ships'
 
-let ship
+let player
 
 beforeEach(() => {
-  ship = new Ship(3)
+  player = new Player('Lucas')
 })
 
-describe('Ship', () => {
-  test('Does not allow length to not be specified', () => {
-    const noLengthShip = () => new Ship()
-    expect(noLengthShip).toThrowError('Ships are only allowed to be between 2 and 5 cells long')
+describe('Player', () => {
+  test('contains the appropiate properties', () => {
+    expect(player).toHaveProperty('name')
+    expect(player).toHaveProperty('board')
+    expect(player).toHaveProperty('isActive')
   })
 
-  test('Does not allow length to be higher than 5 or lower than 2', () => {
-    const longShip = () => new Ship(7)
-    const shortShip = () => new Ship(1)
-
-    expect(longShip).toThrowError('Ships are only allowed to be between 2 and 5 cells long')
-    expect(shortShip).toThrowError('Ships are only allowed to be between 2 and 5 cells long')
+  test('board and isActive start with Gameboard and false respectively', () => {
+    expect(player.board).toBeInstanceOf(Gameboard)
+    expect(player.isActive).toBeFalsy()
   })
 
-  test('contains valid properties', () => {
-    expect(ship).toHaveProperty('length')
-    expect(ship).toHaveProperty('hits')
-    expect(ship).toHaveProperty('isSunk')
+  test('toggleActive alternates the isActive status between true and false', () => {
+    player.toggleActive()
+    expect(player.isActive).toBeTruthy()
+    player.toggleActive()
+    expect(player.isActive).toBeFalsy()
   })
 
-  test('starts with proper values', () => {
-    expect(ship.length).toBe(3)
-    expect(ship.hits).toBe(0)
-    expect(ship.isSunk).toBeFalsy()
-  })
+  test("places random ships in the player's grid", () => {
+    jest.spyOn(player.board, 'placeShip').mockReturnValue(true)
 
-  test('hit increases its hit status by 1', () => {
-    const initialHits = ship.hits
-    ship.hit()
-    expect(ship.hits).toBe(initialHits + 1)
-  })
+    player.placeRandomShips()
 
-  test("checkSunk returns sunk status according to the times the ship's been hit", () => {
-    expect(ship.checkSunk()).toBeFalsy()
-    for (let i = 0; i < ship.length; i++) {
-      ship.hit()
+    for (const shipType of ships) {
+      expect(player.board.placeShip).toHaveBeenCalledWith(expect.any(Ship), expect.any(Number), expect.any(Number), expect.any(Boolean))
     }
-    expect(ship.checkSunk()).toBeTruthy()
   })
 
-  test('sink sets the sunk status to true', () => {
-    expect(ship.isSunk).toBeFalsy()
-    ship.sink()
-    expect(ship.isSunk).toBeTruthy()
+  test('Ai attack picks random cell and retries if it hits a previously attacked one', () => {
+    jest.spyOn(player.board, 'receiveAttack').mockImplementation((x, y) => {
+      return x === 1 && y === 1 ? { success: true } : { success: false }
+    })
+
+    const result = player.randomAttack()
+
+    expect(player.board.receiveAttack).toHaveBeenCalledWith(expect.any(Number), expect.any(Number))
+    expect(result.success).toBe(true)
   })
 })
