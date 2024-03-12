@@ -37,7 +37,7 @@ After all ships have been placed, start attacking the enemy by clicking any cell
 
 If the user misses, the cell will display an "x" and the blue color representing water. After each attack, the computer will target the user's grid and attempt to hit the user.
 
-<img src="./docs-images/05-receiveenemy-attack.JPG"/>
+<img src="./docs-images/05-receiveenemy-attack.jpg"/>
 
 Successful hits are represented by a red cell along with "o" reprenseting a ship cell.
 
