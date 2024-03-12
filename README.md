@@ -64,6 +64,6 @@ Checkout my other projects in order to see my evolution:
   <li><a href="https://github.com/hroglardev/Tic-tac-toe" target="_blank">Tic-tac-toe</a></li>
   <li><a href="https://github.com/hroglardev/Restaurant-page" target="_blank">Restaurant page</a></li>
   <li><a href="https://github.com/hroglardev/To-do-list-js" target="_blank">To-do-list</a></li>
-  <li><a href="https://github.com/hroglardev/Battleship" target="_blank">Weather app</a></li>
-  <li><a href="https://github.com/hroglardev/Weather-app" target="_blank">You are here</a></li>
+  <li><a href="https://github.com/hroglardev/Weather-app" target="_blank">Weather app</a></li>
+  <li><a href="https://github.com/hroglardev/Battleship" target="_blank">You are here</a></li>
 </ol>
